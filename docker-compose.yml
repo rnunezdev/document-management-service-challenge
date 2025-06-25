@@ -1,0 +1,62 @@
+services:
+  postgresql:
+    container_name: postgresql_container
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    networks:
+      - batch_network
+    volumes:
+      - challenge_postgresql_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=clara_pass
+      - POSTGRES_DB=challenge
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    restart: always
+    networks:
+      - batch_network
+    ports:
+      - "9000:9000"  # API S3
+      - "9001:9001"  # MinIO Web Console
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: minio123
+    command: server --console-address ":9001" /data
+    volumes:
+      - challenge_minio_data:/data
+  backend:
+    networks:
+      - batch_network
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: document-management-service
+    depends_on:
+      - postgresql
+      - minio
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/challenge
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: clara_pass
+      MINIO_URL: http://minio:9000
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: minio123
+      MINIO_BUCKET: document-bucket
+      JAVA_OPTS: -Xms50m -Xmx50m
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+volumes:
+  challenge_postgresql_data:
+    driver: local
+  challenge_minio_data:
+    driver: local
+
+networks:
+  batch_network:
+    driver: bridge
