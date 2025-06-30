@@ -1,8 +1,12 @@
 package com.clara.ops.challenge.document_management_service_challenge.dto;
 
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+@Builder
 public record DocumentDto(
         Long id,
         String user,

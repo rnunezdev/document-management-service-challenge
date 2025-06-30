@@ -1,27 +1,36 @@
 package com.clara.ops.challenge.document_management_service_challenge.repository;
 
-import com.clara.ops.challenge.document_management_service_challenge.config.AbstractPostgresContainerTest;
+import com.clara.ops.challenge.document_management_service_challenge.config.AbstractMinioPostgresContainerTest;
 import com.clara.ops.challenge.document_management_service_challenge.config.TestMinioConfig;
 import com.clara.ops.challenge.document_management_service_challenge.entity.Document;
 import com.clara.ops.challenge.document_management_service_challenge.entity.DocumentStatus;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 @Import(TestMinioConfig.class)
-@ActiveProfiles("test")
-public class DocumentRepositoryTest extends AbstractPostgresContainerTest {
+public class DocumentRepositoryTest extends AbstractMinioPostgresContainerTest {
 
     @Resource
     private DocumentRepository documentRepository;
+
+    @Resource
+    private DataSource dataSource;
+
+    @Override
+    protected DataSource getDataSource() {
+        return dataSource;
+    }
 
     @BeforeEach
     void cleanUp() {

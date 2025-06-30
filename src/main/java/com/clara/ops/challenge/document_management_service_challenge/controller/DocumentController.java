@@ -3,9 +3,8 @@ package com.clara.ops.challenge.document_management_service_challenge.controller
 import com.clara.ops.challenge.document_management_service_challenge.dto.DocumentSearchCriteria;
 import com.clara.ops.challenge.document_management_service_challenge.dto.DocumentUploadRequestDTO;
 import com.clara.ops.challenge.document_management_service_challenge.dto.PaginatedDocumentSearch;
-import com.clara.ops.challenge.document_management_service_challenge.service.DocumentServiceImpl;
+import com.clara.ops.challenge.document_management_service_challenge.service.DocumentService;
 import com.clara.ops.challenge.document_management_service_challenge.util.validator.PdfFileOnly;
-import com.clara.ops.challenge.document_management_service_challenge.util.validator.PdfFileValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Constraint;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +29,7 @@ import java.util.List;
 @Slf4j
 public class DocumentController {
 
-    private final DocumentServiceImpl documentService;
+    private final DocumentService documentService;
 
 
     @Operation(summary = "Upload a document",
