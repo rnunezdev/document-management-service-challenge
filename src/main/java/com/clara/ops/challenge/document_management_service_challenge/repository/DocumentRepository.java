@@ -9,7 +9,4 @@ import java.util.List;
 @Repository
 public interface DocumentRepository  extends JpaRepository<Document, Long> {
 
-    List<Document> findAllByUserId(String userId);
-    List<Document> findAllByStatus(String status);
-
 }

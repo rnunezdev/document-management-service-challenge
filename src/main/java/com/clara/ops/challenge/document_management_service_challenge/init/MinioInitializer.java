@@ -24,7 +24,7 @@ public class MinioInitializer {
     @PostConstruct
     public void ensureBucketExists() {
         try {
-            log.info("🚀 Verifying bucket existence '{}' in MinIO...", bucketName);
+            log.info("Verifying bucket existence '{}' in MinIO...", bucketName);
 
             boolean exists = minioClient.bucketExists(
                     BucketExistsArgs.builder().bucket(bucketName).build()
@@ -32,13 +32,13 @@ public class MinioInitializer {
 
             if (!exists) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-                log.info("✅ Bucket '{}' created successfully.", bucketName);
+                log.info("Bucket '{}' created successfully.", bucketName);
             } else {
-                log.info("🪣 Bucket '{}' already exists.", bucketName);
+                log.info("Bucket '{}' already exists.", bucketName);
             }
 
         } catch (Exception e) {
-            log.error("❌ Failed to initialize bucket '{}'", bucketName, e);
+            log.error("Failed to initialize bucket '{}'", bucketName, e);
             throw new RuntimeException("Could not initialize MinIO bucket", e);
         }
     }

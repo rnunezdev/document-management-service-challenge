@@ -25,6 +25,8 @@ services:
     environment:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: minio123
+      MINIO_LOG_LEVEL: debug
+
     command: server --console-address ":9001" /data
     volumes:
       - challenge_minio_data:/data
@@ -46,11 +48,22 @@ services:
       MINIO_ACCESS_KEY: admin
       MINIO_SECRET_KEY: minio123
       MINIO_BUCKET: document-bucket
-      JAVA_OPTS: -Xms50m -Xmx50m
+      JAVA_OPTS: >
+        -Xms50m -Xmx50m 
+        -Djava.rmi.server.hostname=localhost 
+        -Dcom.sun.management.jmxremote 
+        -Dcom.sun.management.jmxremote.port=1099 
+        -Dcom.sun.management.jmxremote.rmi.port=1099 
+        -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+        -XX:+UseSerialGC
+        -XX:+UseContainerSupport
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     ports:
       - "8080:8080"
       - "5005:5005"
+      - "1099:1099"
+    volumes:
+      - ./heapdumps:/tmp
 volumes:
   challenge_postgresql_data:
     driver: local

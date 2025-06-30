@@ -2,12 +2,14 @@ package com.clara.ops.challenge.document_management_service_challenge.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 
 @Data
+@AllArgsConstructor
 public class DocumentUploadRequestDTO {
     @NotBlank
     private String user;

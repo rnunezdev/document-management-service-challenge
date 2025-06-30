@@ -54,33 +54,6 @@ public class DocumentRepositoryTest extends AbstractPostgresContainerTest {
 
     }
 
-    @Test
-    void shouldFindDocumentsByUserId() {
-        String userId = "raul";
-        Document doc1 = buildSampleDocument(userId, "doc1.pdf");
-        Document doc2 = buildSampleDocument(userId, "doc2.pdf");
-
-        documentRepository.saveAll(List.of(doc1, doc2));
-
-        List<Document> results = documentRepository.findAllByUserId(userId);
-
-        assertThat(results).hasSize(2);
-        assertThat(results).extracting(Document::getDocumentName)
-                .containsExactlyInAnyOrder("doc1.pdf", "doc2.pdf");
-    }
-
-    @Test
-    void shouldFindDocumentsByStatus() {
-        Document activeDoc = buildSampleDocument("userA", "active.pdf", DocumentStatus.ACTIVE.name());
-        Document inactiveDoc = buildSampleDocument("userB", "inactive.pdf", DocumentStatus.INACTIVE.name());
-
-        documentRepository.saveAll(List.of(activeDoc, inactiveDoc));
-
-        List<Document> activeResults = documentRepository.findAllByStatus(DocumentStatus.ACTIVE.name());
-        assertThat(activeResults).hasSize(1);
-        assertThat(activeResults.get(0).getDocumentName()).isEqualTo("active.pdf");
-    }
-
     private Document buildSampleDocument(String userId, String name) {
         return buildSampleDocument(userId, name, DocumentStatus.ACTIVE.name());
     }
