@@ -4,16 +4,15 @@ import com.clara.ops.challenge.document_management_service_challenge.dto.Documen
 import com.clara.ops.challenge.document_management_service_challenge.entity.Document;
 
 public class DocumentMapper {
-    public static DocumentDto toDto(Document document) {
+  public static DocumentDto toDto(Document document) {
 
-        return new DocumentDto(
-                document.getId(),
-                document.getUserId(),
-                document.getDocumentName(),
-                document.getTags(),
-                document.getFileSize(),
-                document.getFileType(),
-                document.getCreatedAt()
-        );
-    }
+    return new DocumentDto(
+        document.getId(),
+        document.getUserId(),
+        document.getDocumentName(),
+        document.getTags(),
+        document.getFileSize(),
+        document.getFileType(),
+        document.getCreatedAt());
+  }
 }

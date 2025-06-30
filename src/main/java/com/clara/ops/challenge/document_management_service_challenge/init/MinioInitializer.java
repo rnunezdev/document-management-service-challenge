@@ -16,31 +16,29 @@ import org.springframework.stereotype.Component;
 @Profile("!test")
 public class MinioInitializer {
 
-    private final MinioClient minioClient;
+  private final MinioClient minioClient;
 
-    @Value("${minio.bucket}")
-    private String bucketName;
+  @Value("${minio.bucket}")
+  private String bucketName;
 
-    @PostConstruct
-    public void ensureBucketExists() {
-        try {
-            log.info("Verifying bucket existence '{}' in MinIO...", bucketName);
+  @PostConstruct
+  public void ensureBucketExists() {
+    try {
+      log.info("Verifying bucket existence '{}' in MinIO...", bucketName);
 
-            boolean exists = minioClient.bucketExists(
-                    BucketExistsArgs.builder().bucket(bucketName).build()
-            );
+      boolean exists =
+          minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
 
-            if (!exists) {
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-                log.info("Bucket '{}' created successfully.", bucketName);
-            } else {
-                log.info("Bucket '{}' already exists.", bucketName);
-            }
+      if (!exists) {
+        minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+        log.info("Bucket '{}' created successfully.", bucketName);
+      } else {
+        log.info("Bucket '{}' already exists.", bucketName);
+      }
 
-        } catch (Exception e) {
-            log.error("Failed to initialize bucket '{}'", bucketName, e);
-            throw new RuntimeException("Could not initialize MinIO bucket", e);
-        }
+    } catch (Exception e) {
+      log.error("Failed to initialize bucket '{}'", bucketName, e);
+      throw new RuntimeException("Could not initialize MinIO bucket", e);
     }
+  }
 }
-

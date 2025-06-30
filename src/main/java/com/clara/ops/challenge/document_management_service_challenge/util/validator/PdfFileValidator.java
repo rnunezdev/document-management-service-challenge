@@ -5,8 +5,8 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;
 
 public class PdfFileValidator implements ConstraintValidator<PdfFileOnly, MultipartFile> {
-    @Override
-    public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
-        return file != null && "application/pdf".equals(file.getContentType());
-    }
+  @Override
+  public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
+    return file != null && "application/pdf".equals(file.getContentType());
+  }
 }

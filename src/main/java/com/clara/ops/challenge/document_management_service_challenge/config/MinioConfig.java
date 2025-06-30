@@ -11,21 +11,18 @@ import org.springframework.context.annotation.Scope;
 @Profile("!test")
 public class MinioConfig {
 
-    @Value("${minio.url}")
-    private String minioUrl;
+  @Value("${minio.url}")
+  private String minioUrl;
 
-    @Value("${minio.access-key}")
-    private String accessKey;
+  @Value("${minio.access-key}")
+  private String accessKey;
 
-    @Value("${minio.secret-key}")
-    private String secretKey;
+  @Value("${minio.secret-key}")
+  private String secretKey;
 
-    @Bean
-    @Scope("prototype")
-    public MinioClient minioClient() {
-        return MinioClient.builder()
-                .endpoint(minioUrl)
-                .credentials(accessKey, secretKey)
-                .build();
-    }
+  @Bean
+  @Scope("prototype")
+  public MinioClient minioClient() {
+    return MinioClient.builder().endpoint(minioUrl).credentials(accessKey, secretKey).build();
+  }
 }
